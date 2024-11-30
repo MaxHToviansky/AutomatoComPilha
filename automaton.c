@@ -46,13 +46,18 @@ int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at){
         
         Transicao tr = *at->producoes[est][j];
         
-        if(tr.simbFita!='&' && s[i]!=tr.simbFita) continue;
+        
+        if(tr.simbFita!='&' && tr.simbFita!='?' && s[i]!=tr.simbFita) continue;
+        if(tr.simbFita=='?' && s[i]!='\0') continue;
+        
         int popado = 0;
         if(tr.leitPilha!='&'){
-            if(tr.leitPilha=='?' && p->topo>= 0) continue;
-            if( (p->topo<0 || tr.leitPilha!=pTop(p)) && tr.leitPilha != '?' ) continue;
-            pop(p);
-            popado=1;
+
+            if(tr.leitPilha!='?'){
+                if(p->topo<0 || tr.leitPilha!=pTop(p)) continue;
+                pop(p);
+                popado=1;
+            }else if(p->topo>=0) continue;
 
         }
 
