@@ -26,13 +26,13 @@ AutomatoPilha* buildAuto(int n){
     at->transEst = calloc(n,sizeof(int));
     return at;
 }
-void inserirTransicao(AutomatoPilha* pl, int a, Transicao* tr){
-    if(pl->capEst[a] <= pl->transEst[a]+1){
-        pl->capEst[a] = (3*pl->capEst[a]+1)/2;
-        pl->producoes[a] = realloc(pl->producoes[a], pl->capEst[a]*(sizeof(Transicao*)));
+void inserirTransicao(AutomatoPilha* pl, int estado, Transicao* tr){
+    if(pl->capEst[estado] <= pl->transEst[estado]+1){
+        pl->capEst[estado] = (3*pl->capEst[estado]+1)/2;
+        pl->producoes[estado] = realloc(pl->producoes[estado], pl->capEst[estado]*(sizeof(Transicao*)));
     }
-    pl->producoes[a][pl->transEst[a]] = tr;
-    pl->transEst[a]++;
+    pl->producoes[estado][pl->transEst[estado]] = tr;
+    pl->transEst[estado]++;
 }
 int avaliar(char* s, AutomatoPilha* at, int posCru){
     Pilha* p = buildPilha();
