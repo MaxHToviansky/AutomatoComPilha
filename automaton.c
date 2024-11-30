@@ -49,10 +49,12 @@ int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at){
         if(tr.simbFita!='&' && s[i]!=tr.simbFita) continue;
         int popado = 0;
         if(tr.leitPilha!='&'){
-            if(tr.leitPilha=='?' && p->topo>= 0) continue;
-            if(p->topo<0 || tr.leitPilha!=pTop(p)) continue;
-            pop(p);
-            popado=1;
+
+            if(tr.leitPilha!='?'){
+                if(p->topo<0 || tr.leitPilha!=pTop(p)) continue;
+                pop(p);
+                popado=1;
+            }else if(p->topo>=0) continue;
 
         }
 
