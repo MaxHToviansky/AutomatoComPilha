@@ -1,4 +1,5 @@
 #include "automaton.h"
+#include <stdio.h>
 
 
 
@@ -33,12 +34,12 @@ void inserirTransicao(AutomatoPilha* pl, int a, Transicao* tr){
     pl->producoes[a][pl->transEst[a]] = tr;
     pl->transEst[a]++;
 }
-int avaliar(char* s, AutomatoPilha* at){
+int avaliar(char* s, AutomatoPilha* at, int posCru){
     Pilha* p = buildPilha();
-    return explore(at->estInicial,s,0,p,at);
+    return explore(at->estInicial,s,0,p,at, posCru);
 }
 
-int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at){
+int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at, int posCru){
     
     int res = 0;
     if(at->estFinal[est] && s[i]=='\0' && p->topo==-1) return 1;
@@ -62,8 +63,44 @@ int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at){
         }
 
         if(tr.escPilha!='&') push(p,tr.escPilha);
-        
-        res |= explore(tr.dest,s,i+(tr.simbFita!='&'),p,at);
+        if( tr.simbFita != '&' ) {
+            switch (posCru)
+            {
+            case 2:
+                switch( tr.dest ) {
+                case 1:
+                    printf("Origem\tNorte\tOeste\tSul\n%c\tAberto\tFechado\tFechado\n\n", s[i]);
+                    break;
+                case 2:
+                    printf("Origem\tNorte\tOeste\tSul\n%c\tFechado\tAberto\tFechado\n\n", s[i]);
+                    break;
+                case 3:
+                    printf("Origem\tNorte\tOeste\tSul\n%c\tFechado\tFechado\tAberto\n\n", s[i]);
+                    break;
+                default:
+                    printf("Origem\tNorte\tOeste\tSul\nSem\tFechado\tFechado\tFechado\n\n");
+                }
+                break;
+            case 3:
+                switch( tr.dest ) {
+                case 1:
+                    printf("Origem\tNorte\tLeste\tSul\n%c\tAberto\tFechado\tFechado\n\n", s[i]);
+                    break;
+                case 2:
+                    printf("Origem\tNorte\tLeste\tSul\n%c\tFechado\tAberto\tFechado\n\n", s[i]);
+                    break;
+                case 3:
+                    printf("Origem\tNorte\tLeste\tSul\n%c\tFechado\tFechado\tAberto\n\n", s[i]);
+                    break;
+                default:
+                    printf("Origem\tNorte\tLeste\tSul\nSem\tFechado\tFechado\tFechado\n\n");
+                }
+            
+            default:
+                break;
+            }
+        }
+        res |= explore(tr.dest,s,i+(tr.simbFita!='&'),p,at, posCru);
         
         if(tr.escPilha!='&') pop(p);
         if(popado) push(p,tr.leitPilha);

@@ -23,8 +23,8 @@ typedef struct automatoPilha{
 Transicao* buildTrans(int dest, char simbFita,char leitPilha,char escPilha);
 AutomatoPilha* buildAuto(int n);
 void inserirTransicao(AutomatoPilha* pl, int a, Transicao* tr);
-int avaliar(char* s, AutomatoPilha* at);
-int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at);
+int avaliar(char* s, AutomatoPilha* at, int posCru);
+int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at, int posCru);
 
 
 #endif
