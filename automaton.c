@@ -50,7 +50,7 @@ int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at){
         int popado = 0;
         if(tr.leitPilha!='&'){
             if(tr.leitPilha=='?' && p->topo>= 0) continue;
-            if(p->topo<0 || tr.leitPilha!=pTop(p)) continue;
+            if( (p->topo<0 || tr.leitPilha!=pTop(p)) && tr.leitPilha != '?' ) continue;
             pop(p);
             popado=1;
 
