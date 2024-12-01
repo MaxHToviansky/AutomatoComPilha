@@ -1,6 +1,12 @@
 #include "automaton.h"
 
 
+// Implementação de um automato com pilha. Pode ser utilizado com automatos sem pilha usando leituras
+// e escritas vazias na pilha. 
+// Não tem suporte para automatos com rejeição por loop.
+// Não tem suporte para remoção e adição de estados, apenas a quantidade alocada na sua criação.
+// Pode inserir transições, mas não as remove.
+
 
 Transicao* buildTrans(int dest, char simbFita,char leitPilha,char escPilha){
     Transicao *trans = malloc(sizeof(Transicao));
@@ -25,14 +31,18 @@ AutomatoPilha* buildAuto(int n){
     at->transEst = calloc(n,sizeof(int));
     return at;
 }
+
+
 void inserirTransicao(AutomatoPilha* pl, int estado, Transicao* tr){
-    if(pl->capEst[estado] <= pl->transEst[estado]+1){
+    if(pl->capEst[estado] <= pl->transEst[estado]+1){ // Implementação de vetor dinâmico
         pl->capEst[estado] = (3*pl->capEst[estado]+1)/2;
         pl->producoes[estado] = realloc(pl->producoes[estado], pl->capEst[estado]*(sizeof(Transicao*)));
     }
     pl->producoes[estado][pl->transEst[estado]] = tr;
     pl->transEst[estado]++;
 }
+
+// Dado uma fita e um automato, valida a fita. Automatos NÃO podem ter casos de loop.
 int avaliar(char* s, AutomatoPilha* at, int posCru){
     Pilha* p = buildPilha();
     return explore(at->estInicial,s,0,p,at, posCru);
@@ -47,22 +57,22 @@ int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at, int posCru){
         Transicao tr = *at->producoes[est][j];
         
         
-        if(tr.simbFita!='&' && tr.simbFita!='?' && s[i]!=tr.simbFita) continue;
-        if(tr.simbFita=='?' && s[i]!='\0') continue;
+        if(tr.simbFita!='&' && tr.simbFita!='?' && s[i]!=tr.simbFita) continue; // Lê fita
+        if(tr.simbFita=='?' && s[i]!='\0') continue; // Verifica fita vazia caso leia '?'
         
-        int popado = 0;
-        if(tr.leitPilha!='&'){
+        int popado = 0; 
+        if(tr.leitPilha!='&'){ //Caso necessario lê da pilha
 
-            if(tr.leitPilha!='?'){
-                if(p->topo<0 || tr.leitPilha!=pTop(p)) continue;
+            if(tr.leitPilha!='?'){ 
+                if(p->topo<0 || tr.leitPilha!=pTop(p)) continue; //Lê pilha
                 pop(p);
                 popado=1;
-            }else if(p->topo>=0) continue;
+            }else if(p->topo>=0) continue; // Verificação de pilha vazia
 
         }
 
-        if(tr.escPilha!='&') push(p,tr.escPilha);
-        if( tr.simbFita != '&' ) {
+        if(tr.escPilha!='&') push(p,tr.escPilha); // Escreve na pilha
+        if( tr.simbFita != '&' ) { // Funções de print
             switch (posCru)
             {
             case 2:
@@ -99,11 +109,12 @@ int explore(int est,char* s, int i, Pilha* p, AutomatoPilha* at, int posCru){
                 break;
             }
         }
-        res |= explore(tr.dest,s,i+(tr.simbFita!='&'),p,at, posCru);
         
-        if(tr.escPilha!='&') pop(p);
-        if(popado) push(p,tr.leitPilha);
-        if(res) return 1;
+        res |= explore(tr.dest,s,i+(tr.simbFita!='&'),p,at, posCru); 
+        
+        if(tr.escPilha!='&') pop(p); // Remove o que foi alterado da pilha, para manter apenas uma pilha no programa
+        if(popado) push(p,tr.leitPilha); // devolve o que foi retirado da pilha 
+        if(res) return 1; // encerra se um caminho aceito foi encotrado
     }
     return 0;
 }
