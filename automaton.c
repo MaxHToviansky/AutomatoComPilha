@@ -1,5 +1,4 @@
 #include "automaton.h"
-#include <stdio.h>
 
 
 

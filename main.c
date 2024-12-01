@@ -1,12 +1,31 @@
 #include "automaton.h"
-#include <stdio.h>
+#include "interface.h"
 
 void initialize( AutomatoPilha **at, Transicao ***tr );
-
 int main(){
     AutomatoPilha** at = malloc( 11 * sizeof(AutomatoPilha*) );
     Transicao ***tr = malloc(11*sizeof(Transicao*));
     initialize( at, tr );
+    int opt = -1;
+    do {
+        menu();
+        scanf(" %i", &opt);
+        switch (opt)
+        {
+        case 0:
+            printf("Encerrando programa...\n");
+            break;
+        case 1:
+            validaCaminho( at );
+            break;
+        case 2:
+            validaSemaforo( at );
+            break;
+        default:
+            printf("Opcao invalida");
+            break;
+        }
+    } while( opt != 0 );
 
 }
 
@@ -121,10 +140,6 @@ void initialize( AutomatoPilha **at, Transicao ***tr ) {
         inserirTransicao(at[i],5,tr[i][6]);
         inserirTransicao(at[i],6,tr[i][7]);
     }
-    char *a = "SSSNNNE\0";
-    char *b = "SSSNNNE\0";
-    printf("%i\n",avaliar(a,at[2], 0));
-    printf("%i\n", avaliar(b,at[3], 0));
 
     // Construção do caminho a partir de 'C', sem curvas nos pontos do semáforo
     at[4] = buildAuto(5);
@@ -139,8 +154,6 @@ void initialize( AutomatoPilha **at, Transicao ***tr ) {
     inserirTransicao(at[4],1,tr[4][1]);
     inserirTransicao(at[4],2,tr[4][2]);
     inserirTransicao(at[4],2,tr[4][3]);
-    char *c = "LLL\0";
-    printf("%i\n",avaliar(c,at[4], 0));
     
     // Construção do caminho a partir de 'D', sem curvas nos pontos do semáforo
     at[5] = buildAuto(6);
@@ -158,8 +171,6 @@ void initialize( AutomatoPilha **at, Transicao ***tr ) {
     inserirTransicao(at[5],1,tr[5][3]);
     inserirTransicao(at[5],2,tr[5][2]);
     inserirTransicao(at[5],2,tr[5][4]);
-    char *d = "OOE\0";
-    printf("%i\n",avaliar(d,at[5], 0));
 
     // Com curvas nos semáforos
     // Construção dos caminhos começando em 'A'
@@ -192,8 +203,6 @@ void initialize( AutomatoPilha **at, Transicao ***tr ) {
     inserirTransicao(at[6],4,tr[6][9]);
     inserirTransicao(at[6],5,tr[6][10]);
     inserirTransicao(at[6],6,tr[6][11]);
-    char *ac = "SSSNNNE\0";
-    printf("%i\n",avaliar(ac,at[6], 0));
 
     // Construção dos caminhos começando em 'B'
     at[7] = buildAuto(10);
@@ -225,9 +234,6 @@ void initialize( AutomatoPilha **at, Transicao ***tr ) {
     inserirTransicao(at[7],5,tr[7][9]);
     inserirTransicao(at[7],5,tr[7][10]);
     inserirTransicao(at[7],6,tr[7][11]);
-
-    char *bc = "E\0";
-    printf("%i\n",avaliar(bc,at[7], 0));
 
     // Construção dos caminhos começando em 'C'
     at[8] = buildAuto(11);
@@ -261,9 +267,6 @@ void initialize( AutomatoPilha **at, Transicao ***tr ) {
     inserirTransicao(at[8],8,tr[8][10]);
     inserirTransicao(at[8],8,tr[8][11]);
     inserirTransicao(at[8],8,tr[8][12]);
-
-    char *cc = "LLSE\0";
-    printf("%i\n",avaliar(cc,at[8], 0));
 
     // Construção dos caminhos começando em 'D'
     at[9] = buildAuto(11);
@@ -299,6 +302,4 @@ void initialize( AutomatoPilha **at, Transicao ***tr ) {
     inserirTransicao(at[9],5,tr[9][11]);
     inserirTransicao(at[9],7,tr[9][12]);
 
-    char *dc = "OONNE\0";
-    printf("%i\n",avaliar(dc,at[9], 0));
 }
