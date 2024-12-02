@@ -249,10 +249,10 @@ void initialize( AutomatoPilha **at, Transicao ***tr ) {
     tr[8][5] = buildTrans(9,'E','&','&');   // C2->Pr4
     tr[8][6] = buildTrans(10,'E','&','&');  // B->Pb
     tr[8][7] = buildTrans(6,'S','&','&');   // C4->R3
-    tr[8][8] = buildTrans(6,'N','&','&');   // R3->C4'
-    tr[8][9] = buildTrans(7,'N','&','&');   // C4'->C2'
+    tr[8][8] = buildTrans(7,'N','&','&');   // R3->C4'
+    tr[8][9] = buildTrans(8,'N','&','&');   // C4'->C2'
     tr[8][10] = buildTrans(4,'L','&','&');  // C2'->R4
-    tr[8][11] = buildTrans(3,'N','&','&');  // C2->B
+    tr[8][11] = buildTrans(3,'N','&','&');  // C2'->B
     tr[8][12] = buildTrans(9,'E','&','&');  // C2'->Pr4
     inserirTransicao(at[8],0,tr[8][0]);
     inserirTransicao(at[8],1,tr[8][1]);
